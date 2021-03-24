@@ -1,5 +1,8 @@
 package testing.streams.Design.signalton;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+
 public class ClientTest {
 
 	public static void main(String[] args) {
@@ -44,6 +47,29 @@ public class ClientTest {
 			MySingletoneThread2 t = new MySingletoneThread2();
 			t.start();
 		}
+		
+		
+		//Destroy singleton using Reflection
+		Constructor<?>[] declaredConstructors = Singleton.class.getDeclaredConstructors();
+		for(Constructor<?> con : declaredConstructors) {
+			con.setAccessible(true);
+			try {
+				Object newInstance = con.newInstance();
+				Singleton ss = (Singleton) newInstance;
+				System.out.println("Singletone object using Reflection : "+ ss.hashCode());
+				System.out.println("Singletone object without using Reflection : "+ s.hashCode());
+			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+					| InvocationTargetException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		//Single ton Using ENum
+		System.out.println("Enum Singletone 1 : " + SibgletonUsingEnum.INSTANCE.hashCode());
+		System.out.println("Enum Singletone 2 : " + SibgletonUsingEnum.INSTANCE.hashCode());
+		System.out.println("Enum Singletone 3 : " + SibgletonUsingEnum.INSTANCE.hashCode());
+		
 	}
 
 }
